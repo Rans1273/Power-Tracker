@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "898244754613",
+    "project_id": "powertrack-d5d35",
+    "storage_bucket": "powertrack-d5d35.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898244754613:android:aa50bcf6c7615b43e4d2fc",
+        "android_client_info": {
+          "package_name": "com.example.power_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-z74FFf6YiTrixWELZYuHbiZdhE4enfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
