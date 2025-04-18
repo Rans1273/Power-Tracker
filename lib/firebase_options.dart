@@ -46,6 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '898244754613',
     projectId: 'powertrack-d5d35',
     authDomain: 'powertrack-d5d35.firebaseapp.com',
+    databaseURL: 'https://powertrack-d5d35-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'powertrack-d5d35.firebasestorage.app',
     measurementId: 'G-CHXKP9SLE0',
   );
@@ -55,6 +56,7 @@ class DefaultFirebaseOptions {
     appId: '1:898244754613:android:aa50bcf6c7615b43e4d2fc',
     messagingSenderId: '898244754613',
     projectId: 'powertrack-d5d35',
+    databaseURL: 'https://powertrack-d5d35-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'powertrack-d5d35.firebasestorage.app',
   );
 
@@ -63,6 +65,7 @@ class DefaultFirebaseOptions {
     appId: '1:898244754613:ios:fccf99613afe4c1ae4d2fc',
     messagingSenderId: '898244754613',
     projectId: 'powertrack-d5d35',
+    databaseURL: 'https://powertrack-d5d35-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'powertrack-d5d35.firebasestorage.app',
     iosBundleId: 'com.example.powerTracker',
   );
@@ -72,6 +75,7 @@ class DefaultFirebaseOptions {
     appId: '1:898244754613:ios:fccf99613afe4c1ae4d2fc',
     messagingSenderId: '898244754613',
     projectId: 'powertrack-d5d35',
+    databaseURL: 'https://powertrack-d5d35-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'powertrack-d5d35.firebasestorage.app',
     iosBundleId: 'com.example.powerTracker',
   );
