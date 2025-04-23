@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'widgets/bottom_nav.dart';
+import 'login_page.dart';
 
 class ToolsPage extends StatefulWidget {
   const ToolsPage({super.key});
@@ -40,6 +42,18 @@ class _ToolsPageState extends State<ToolsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      Future.microtask(() {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginPage()),
+          (route) => false,
+        );
+      });
+      return const SizedBox();
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Notification Settings')),
       body: Padding(

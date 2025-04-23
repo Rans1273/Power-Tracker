@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -18,7 +19,10 @@ class _RegisterPageState extends State<RegisterPage> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+      );
     } on FirebaseAuthException catch (e) {
       showDialog(
         context: context,
@@ -47,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    Image.asset('assets/icon/app_icon.png', height: 150),
+                    Image.asset('assets/icon/app_icon.png', height: 180),
                     const SizedBox(height: 20),
                     TextField(
                       controller: emailController,

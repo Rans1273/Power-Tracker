@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../home_page.dart';
 import '../tools_page.dart';
-import '../login_page.dart'; // ⬅️ Tambahkan ini untuk akses LoginPage
+import '../login_page.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -17,30 +17,51 @@ class BottomNavBar extends StatelessWidget {
         switch (index) {
           case 0:
             FirebaseAuth.instance.signOut().then((_) {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const LoginPage()),
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginPage()),
                 (route) => false,
               );
             });
             break;
           case 1:
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const HomePage()),
-            );
+            if (currentIndex != 1) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const HomePage()),
+              );
+            }
             break;
           case 2:
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const ToolsPage()),
-            );
+            if (currentIndex != 2) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const ToolsPage()),
+              );
+            }
             break;
         }
       },
+      backgroundColor: Colors.white,
+      elevation: 10,
+      selectedItemColor: Colors.blueAccent,
+      unselectedItemColor: Colors.grey,
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+      unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+      type: BottomNavigationBarType.fixed,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Logout'),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Tools'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.logout),
+          label: 'Logout',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Tools',
+        ),
       ],
     );
   }
