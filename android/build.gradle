@@ -1,3 +1,15 @@
+// File android/build.gradle
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Perbarui ke versi AGP yang lebih baru, misalnya 8.2.1 atau lebih baru
+        classpath 'com.android.tools.build:gradle:8.0.0'
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -9,6 +21,7 @@ rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }

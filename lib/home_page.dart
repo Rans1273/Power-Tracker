@@ -4,6 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'widgets/bottom_nav.dart';
 import 'login_page.dart';
+import 'theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,21 +30,21 @@ class _HomePageState extends State<HomePage> {
 
     // Ambil nilai notification
     dbRef.child('notification').once().then((snapshot) {
-      final notif = snapshot.snapshot.value as Map;
+      final notif = snapshot.snapshot.value as Map?;
       setState(() {
-        topI = (notif['top_I'] ?? 100).toDouble();
-        topP = (notif['top_P'] ?? 100).toDouble();
-        topV = (notif['top_V'] ?? 100).toDouble();
+        topI = (notif?['top_I'] ?? 100).toDouble();
+        topP = (notif?['top_P'] ?? 100).toDouble();
+        topV = (notif?['top_V'] ?? 100).toDouble();
       });
     });
 
     // Ambil data monitoring
     dbRef.child('monitoring').onValue.listen((event) {
-      final data = event.snapshot.value as Map;
+      final data = event.snapshot.value as Map?;
 
-      final newI = data['I'] * 1.0;
-      final newP = data['P'] * 1.0;
-      final newV = data['V'] * 1.0;
+      final newI = (data?['I'] ?? 0) * 1.0;
+      final newP = (data?['P'] ?? 0) * 1.0;
+      final newV = (data?['V'] ?? 0) * 1.0;
 
       setState(() {
         if (newI != I) updateList(iList, newI);
@@ -62,64 +64,67 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildChart(List<double> values, String label, Color color) {
-  double minY = -1;
-  double maxY = 100;
+    double minY = -1;
+    double maxY = 100;
 
-  // Atur min dan max berdasarkan jenis data
-  if (label.contains('Voltage')) {
-    maxY = 300;
-  } else if (label.contains('Current')) {
-    maxY = 15;
-  } else if (label.contains('Power')) {
-    maxY = 5;
-  }
+    if (label.contains('Voltage')) {
+      maxY = 300;
+    } else if (label.contains('Current')) {
+      maxY = 15;
+    } else if (label.contains('Power')) {
+      maxY = 5;
+    }
 
-  return Card(
-    color: Colors.white.withOpacity(0.8),
-    elevation: 3,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    margin: const EdgeInsets.symmetric(vertical: 12),
-    child: Padding(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 180,
-            child: LineChart(
-              LineChartData(
-                titlesData: FlTitlesData(show: false),
-                borderData: FlBorderData(show: true),
-                gridData: FlGridData(show: false),
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: values.asMap().entries.map(
-                      (e) => FlSpot(e.key.toDouble(), e.value.clamp(minY, maxY)),
-                    ).toList(),
-                    isCurved: true,
-                    color: color,
-                    barWidth: 2,
-                    dotData: FlDotData(show: false),
-                    belowBarData: BarAreaData(show: false),
+    return Card(
+      color: Theme.of(context).cardColor.withOpacity(0.8),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-                lineTouchData: LineTouchData(
-                  touchTooltipData: LineTouchTooltipData(),
-                  touchCallback: (event, response) {},
-                  handleBuiltInTouches: true,
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 180,
+              child: LineChart(
+                LineChartData(
+                  titlesData: FlTitlesData(show: false),
+                  borderData: FlBorderData(show: true),
+                  gridData: FlGridData(show: false),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: values.asMap().entries.map(
+                        (e) => FlSpot(e.key.toDouble(), e.value.clamp(minY, maxY)),
+                      ).toList(),
+                      isCurved: true,
+                      color: color,
+                      barWidth: 2,
+                      dotData: FlDotData(show: false),
+                      belowBarData: BarAreaData(show: false),
+                    ),
+                  ],
+                  lineTouchData: LineTouchData(
+                    touchTooltipData: LineTouchTooltipData(),
+                    handleBuiltInTouches: true,
+                  ),
+                  minY: minY,
+                  maxY: maxY,
                 ),
-                minY: minY,
-                maxY: maxY,
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget buildInfoCard(String label, double value, double threshold, Color color) {
     final isOver = value > threshold;
@@ -129,11 +134,12 @@ class _HomePageState extends State<HomePage> {
         curve: Curves.easeInOut,
         height: 100,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.7),
+          color: Theme.of(context).cardColor.withOpacity(0.7),
           borderRadius: BorderRadius.circular(12),
-          border: isOver
-              ? Border.all(color: Colors.red, width: 2)
-              : Border.all(color: Colors.transparent),
+          border: Border.all(
+            color: isOver ? Colors.red : Colors.transparent,
+            width: 2,
+          ),
           boxShadow: [
             BoxShadow(
               color: isOver ? Colors.redAccent : Colors.black26,
@@ -149,11 +155,10 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(
               label,
-              style: TextStyle(
-                fontSize: 20,               
-                fontWeight: FontWeight.w700,
-                color: color,
-              ),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             AnimatedSwitcher(
@@ -161,7 +166,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 value.toStringAsFixed(2),
                 key: ValueKey<double>(value),
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ],
@@ -172,7 +177,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildUserCard(User? user) {
     return Card(
-      color: Colors.white.withOpacity(0.8),
+      color: Theme.of(context).cardColor.withOpacity(0.8),
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -187,7 +192,9 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: Text(
                 user?.email ?? "Guest",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 18, // Diperbesar dari ukuran default
+                    ),
               ),
             ),
           ],
@@ -195,6 +202,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -212,74 +220,48 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/login_background.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Monitoring Page',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 73, 73, 73),
-                          shadows: [
-                            Shadow(blurRadius: 10, color: Colors.black45, offset: Offset(1, 1)),
-                          ],
-                        ),
-                      ),
-                      CircleAvatar(
-                        backgroundImage: const AssetImage('assets/images/user.png'),
-                        radius: 20,
-                        backgroundColor: Colors.white.withOpacity(0.7),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        buildUserCard(user),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            buildInfoCard("I", I, topI, Colors.red),
-                            const SizedBox(width: 4),
-                            buildInfoCard("V", V, topV, Colors.blue),
-                            const SizedBox(width: 4),
-                            buildInfoCard("P/KwH", P, topP, Colors.green),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        buildChart(iList, 'Current (I)', Colors.red),
-                        buildChart(vList, 'Voltage (V)', Colors.blue),
-                        buildChart(pList, 'Power (P)', Colors.green),
-                        const SizedBox(height: 32),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        title: const Text('Monitoring Page'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.brightness_6),
+            onPressed: () {
+              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+            },
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 1),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    buildUserCard(user),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        buildInfoCard("I", I, topI, Colors.red),
+                        const SizedBox(width: 4),
+                        buildInfoCard("V", V, topV, Colors.blue),
+                        const SizedBox(width: 4),
+                        buildInfoCard("P/KwH", P, topP, Colors.green),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    buildChart(iList, 'Current (I)', Colors.red),
+                    buildChart(vList, 'Voltage (V)', Colors.blue),
+                    buildChart(pList, 'Power (P)', Colors.green),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 }

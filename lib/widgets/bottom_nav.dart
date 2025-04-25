@@ -11,6 +11,8 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) {
@@ -42,10 +44,10 @@ class BottomNavBar extends StatelessWidget {
             break;
         }
       },
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? const Color(0xFF2C2C2C) : Colors.white,
       elevation: 10,
-      selectedItemColor: Colors.blueAccent,
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: isDark ? Colors.lightBlueAccent : Colors.blueAccent,
+      unselectedItemColor: isDark ? Colors.grey[400] : Colors.grey,
       selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
       unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
       type: BottomNavigationBarType.fixed,
