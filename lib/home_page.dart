@@ -221,7 +221,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Monitoring Page'),
+        title: const Text('Dashboard'),
         actions: [
           IconButton(
             icon: const Icon(Icons.brightness_6),

@@ -72,7 +72,7 @@ class _ToolsPageState extends State<ToolsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Tools'),
       ),
       body: SafeArea(
         child: Padding(
