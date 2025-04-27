@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        buildInfoCard("I", I, topI, Colors.red),
+                        buildInfoCard("A", I, topI, Colors.red),
                         const SizedBox(width: 4),
                         buildInfoCard("V", V, topV, Colors.blue),
                         const SizedBox(width: 4),
@@ -251,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    buildChart(iList, 'Current (I)', Colors.red),
+                    buildChart(iList, 'Current (A)', Colors.red),
                     buildChart(vList, 'Voltage (V)', Colors.blue),
                     buildChart(pList, 'Power (P)', Colors.green),
                   ],

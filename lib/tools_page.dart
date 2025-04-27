@@ -42,11 +42,11 @@ class _ToolsPageState extends State<ToolsPage> {
         'top_V': topV,
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ambang batas notifikasi diperbarui')),
+        const SnackBar(content: Text('Notification threshold updated')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Harap masukkan nilai numerik yang valid')),
+        const SnackBar(content: Text('Please enter a valid numeric value')),
       );
     }
   }
@@ -97,7 +97,7 @@ class _ToolsPageState extends State<ToolsPage> {
                   child: Column(
                     children: [
                       const Text(
-                        'Ambang Batas Arus (A)',
+                        'Max Current Threshold (A)',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -115,7 +115,7 @@ class _ToolsPageState extends State<ToolsPage> {
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 24),
                           decoration: const InputDecoration(
-                            hintText: 'Masukkan nilai',
+                            hintText: 'Enter a value',
                           ),
                         ),
                       ),
@@ -143,7 +143,7 @@ class _ToolsPageState extends State<ToolsPage> {
                   child: Column(
                     children: [
                       const Text(
-                        'Ambang Batas Tegangan (V)',
+                        'Max Voltage Threshold (V)',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -161,7 +161,7 @@ class _ToolsPageState extends State<ToolsPage> {
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 24),
                           decoration: const InputDecoration(
-                            hintText: 'Masukkan nilai',
+                            hintText: 'Enter a value',
                           ),
                         ),
                       ),
@@ -189,7 +189,7 @@ class _ToolsPageState extends State<ToolsPage> {
                   child: Column(
                     children: [
                       const Text(
-                        'Ambang Batas Daya (KwH)',
+                        'Max Power Threshold (kWh)',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -207,7 +207,7 @@ class _ToolsPageState extends State<ToolsPage> {
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 24),
                           decoration: const InputDecoration(
-                            hintText: 'Masukkan nilai',
+                            hintText: 'Enter a value',
                           ),
                         ),
                       ),
@@ -216,11 +216,39 @@ class _ToolsPageState extends State<ToolsPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
               // Save Button
-              ElevatedButton(
-                onPressed: save,
-                child: const Text('Simpan Perubahan'),
+              Container(
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: cardShadowColor!,
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: save,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Center(
+                        child: Text(
+                          'Save Changes',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

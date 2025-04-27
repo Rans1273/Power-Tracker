@@ -16,8 +16,33 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Logout saat app ditutup
+    if (state == AppLifecycleState.detached || state == AppLifecycleState.inactive) {
+      FirebaseAuth.instance.signOut();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +65,7 @@ class MyApp extends StatelessWidget {
             ),
             darkTheme: ThemeData(
               brightness: Brightness.dark,
-              scaffoldBackgroundColor: const Color(0xFF1F1F1F), // dark tapi soft
+              scaffoldBackgroundColor: const Color(0xFF1F1F1F),
               cardColor: const Color(0xFF2A2A2A),
               canvasColor: const Color(0xFF1F1F1F),
               dialogBackgroundColor: const Color(0xFF2A2A2A),

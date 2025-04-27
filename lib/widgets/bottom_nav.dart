@@ -57,8 +57,8 @@ class BottomNavBar extends StatelessWidget {
           label: 'Logout',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.dashboard),
+          label: 'Dashboard',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
