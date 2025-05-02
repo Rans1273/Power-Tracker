@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'register_page.dart';
+//import 'register_page.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      Image.asset('assets/icon/app_icon.png', height: 180),
+                      Image.asset('assets/images/PowerTracker.png', height: 200),
                       const SizedBox(height: 20),
                       TextField(
                         controller: emailController,
@@ -83,12 +83,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: const Text('Login', style: TextStyle(fontSize: 18)),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterPage()));
-                        },
-                        child: const Text("Don't have an account? Register here"),
-                      ),
+                      //TextButton(
+                        //onPressed: () {
+                          //Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterPage()));
+                        //},
+                        //child: const Text("Don't have an account? Register here"),
+                      //),
                     ],
                   ),
                 ),

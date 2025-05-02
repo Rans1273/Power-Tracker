@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      Image.asset('assets/icon/app_icon.png', height: 180),
+                      Image.asset('assets/images/PowerTracker.png', height: 200),
                       const SizedBox(height: 20),
                       TextField(
                         controller: emailController,
