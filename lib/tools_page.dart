@@ -132,7 +132,7 @@ class _ToolsPageState extends State<ToolsPage> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: cardShadowColor!,
+                      color: cardShadowColor,
                       blurRadius: 10,
                       spreadRadius: 1,
                     ),
@@ -178,7 +178,7 @@ class _ToolsPageState extends State<ToolsPage> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: cardShadowColor!,
+                      color: cardShadowColor,
                       blurRadius: 10,
                       spreadRadius: 1,
                     ),
@@ -223,7 +223,7 @@ class _ToolsPageState extends State<ToolsPage> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: cardShadowColor!,
+                      color: cardShadowColor,
                       blurRadius: 10,
                       spreadRadius: 1,
                     ),
