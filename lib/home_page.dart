@@ -24,6 +24,8 @@ class _HomePageState extends State<HomePage> {
   List<double> pList = [];
   List<double> vList = [];
 
+  int s1 = 0, s2 = 0, s3 = 0;
+
   @override
   void initState() {
     super.initState();
@@ -56,11 +58,66 @@ class _HomePageState extends State<HomePage> {
         V = newV;
       });
     });
+
+    // Ambil data switch
+    dbRef.child('switch').onValue.listen((event) {
+      final data = event.snapshot.value as Map?;
+      setState(() {
+        s1 = (data?['S1'] ?? 0) as int;
+        s2 = (data?['S2'] ?? 0) as int;
+        s3 = (data?['S3'] ?? 0) as int;
+      });
+    });
   }
 
   void updateList(List<double> list, double value) {
     if (list.length >= 20) list.removeAt(0);
     list.add(value);
+  }
+
+  void toggleSwitch(String key, int currentValue) {
+    final newValue = currentValue == 1 ? 0 : 1;
+    dbRef.child('switch/$key').set(newValue);
+  }
+
+  Widget buildSwitchCard(String label, int value) {
+    final isActive = value == 1;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => toggleSwitch(label, value),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 400),
+          height: 75,
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isActive ? Colors.green : Colors.grey,
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: isActive ? Colors.green.withOpacity(0.5) : Colors.black26,
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.power_settings_new,
+                color: isActive ? Colors.green : Colors.grey,
+                size: 40,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget buildChart(List<double> values, String label, Color color) {
@@ -193,7 +250,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 user?.email ?? "Guest",
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 18, // Diperbesar dari ukuran default
+                      fontSize: 18,
                     ),
               ),
             ),
@@ -202,7 +259,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -248,6 +304,14 @@ class _HomePageState extends State<HomePage> {
                         buildInfoCard("V", V, topV, Colors.blue),
                         const SizedBox(width: 4),
                         buildInfoCard("P/KwH", P, topP, Colors.green),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        buildSwitchCard("S1", s1),
+                        buildSwitchCard("S2", s2),
+                        buildSwitchCard("S3", s3),
                       ],
                     ),
                     const SizedBox(height: 16),
